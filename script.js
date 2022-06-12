@@ -18,9 +18,15 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
-const createProductItemElement = ({ sku, name, image }) => {
+const brlPrice = (value) => value
+  .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+const createProductItemElement = ({ sku, name, image, salePrice }) => {
   const section = document.createElement('section');
   section.className = 'item';
+  section.appendChild(
+    createCustomElement('div', 'item__price', brlPrice(salePrice))
+    );
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
@@ -38,9 +44,7 @@ const round = (sum) => Math.round(((sum)) * 100) / 100;
 const productsPrice = () => {
   const values = costumerProducts.map(({ salePrice }) => salePrice);
   const total = values.reduce((acc, value) => round(acc + value), 0);
-  const brl =  total
-    .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  totalPrices.innerText = brl;
+  totalPrices.innerText = brlPrice(total);
 };
 
 const cartItemClickListener = (event) => {
