@@ -12,17 +12,24 @@ body {
 .header {
   background-color: rgb(23, 24, 55);
   display: flex;
-  align-items: center;
-  width: 100%;
+  gap: 20px;
   height: 60px;
+  position: fixed;
+  width: 100%;
 }
 
 #btn-mobile {
   display: none;
 }
 
-.container-title {
-  width: 80%;
+.container-title , .container-shopHeader {
+  align-items: center;
+  display: flex;
+}
+
+.container-shopHeader {
+  flex-basis: calc(70% - 20px);
+  justify-content: space-between;
 }
 
 .title {
@@ -32,13 +39,13 @@ body {
 }
 
 .container-cartTitle {
-  position: relative;
-  display: flex;
   align-items: center;
   background-color: rgb(38, 58, 104);
-  width: 40%;
+  display: flex;
+  flex-basis: 30%;
   height: 100%;
-  margin-left: 30px;
+  position: relative;
+  width: 45%;
 }
 
 .container-cartTitle span {
@@ -78,7 +85,7 @@ body {
 
 .container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -90,15 +97,16 @@ body {
   display: flex;
   flex-basis: 70%;
   flex-wrap: wrap;
+  gap: 5px;
   justify-content: center;
-  margin: 40px 0;
+  margin: 60px 0;
+  padding: 8px;
 }
 
 .item {
   display: flex;
   flex-direction: column;
   height: auto;
-  margin: 5px;
   width: 190px;
   border: 2px solid rgb(234, 234, 233);
   border-radius: 5px;
@@ -124,6 +132,8 @@ body {
 .item .item__add {
   background-color: rgb(91, 60, 146);
   border: 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   cursor: pointer;
   margin: 0;
   padding: 10px;
@@ -138,21 +148,25 @@ body {
 .item .item__price {
   display: flex;
   justify-content: flex-end;
-  padding: 4px;
+  padding: 6px;
 }
 
 .cart {
   display: flex;
-  flex-basis: 32%;
   flex-flow: column;
   background-color: rgb(238, 238, 237);
-  height: 90vh;
+  gap: 12px;
+  top: 60px;
+  right: 0;
+  width: 30%;
+  height: 100vh;
+  position: fixed;
 }
 
 .cart .cart__items {
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 70%;
   gap: 12px;
   overflow-y: scroll;
   padding: 4px;
@@ -169,6 +183,7 @@ body {
 }
 
 .empty-cart {
+  border-radius: 4px;
   cursor: pointer;
   width: 170px;
   height: 35px;
@@ -185,6 +200,7 @@ body {
 .total-price {
   padding: 12px;
   font-size: 20px;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -192,11 +208,11 @@ body {
   cursor: default;
 }
 
-@media screen and ( max-width : 600px ) {
+@media screen and ( max-width : 800px ) {
 
   .header {
-    position: fixed;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 12px;
   }
 
   .container {
@@ -204,8 +220,17 @@ body {
   }
 
   .container-title {
-    display: flex;
     justify-content: center;
+    flex-basis: auto;
+    width: auto;
+  }
+
+  .container-title .title {
+    padding-left: 0;
+  }
+
+  .container-shopHeader {
+    flex-basis: 100%;
   }
 
   .cart__title , .container-cartTitle , #on-big-screen {
@@ -213,38 +238,29 @@ body {
   }
 
   .cart {
-    display: none;
-    position: fixed;
+    height: 0;
+    overflow-y: hidden;
+    visibility: hidden;
+    transition: .6s;
     width: 100%;
-    top: 60px;
-    height: 80vh;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    gap: 12px;
   }
 
   .cart.active {
     display: flex;
     height: 100vh;
-    box-shadow: 0 2px 4px -2px black;
+    overflow-y: auto;
+    visibility: visible;
   }
 
   .cart .cart__items {
-    display: flex;
     list-style: none;
     height: 75vh;
     padding: 12px;
-    gap: 12px;
-    flex-direction: column;
   }
 
   .item {
     width: 140px;
     font-size: 14px;
-  }
-
-  .items {
-    margin-top: 80px;
   }
 
   #btn-mobile {
