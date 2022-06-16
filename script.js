@@ -4,17 +4,18 @@ const itemsList = document.querySelector('.items');
 const storageProducts = JSON.parse(getSavedCartItems());
 let costumerProducts = getSavedCartItems() !== null ? storageProducts : [];
 
-const createProductImageElement = (imageSource) => {
+const createProductImageElement = (imageSource, title) => {
   const img = document.createElement('img');
   img.className = 'item__image';
   img.src = imageSource;
+  img.alt = `Imagem do produto ${title}`
   return img;
 };
 
 const createCustomElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
-  e.innerText = innerText;
+  if (innerText !== undefined) e.innerText = innerText;
   return e;
 };
 
@@ -25,7 +26,7 @@ const createProductItemElement = ({ id, title, thumbnail, price }) => {
   const section = document.createElement('section');
   section.className = 'item';
   section.appendChild(
-    createCustomElement('div', 'item__price', brlPrice(price))
+    createCustomElement('span', 'item__price', brlPrice(price))
     );
   section.appendChild(createCustomElement('span', 'item__sku', id));
   section.appendChild(createCustomElement('span', 'item__title', title));
@@ -48,7 +49,7 @@ const productsPrice = () => {
 };
 
 const cartItemClickListener = (event) => {
-  const product = event.target;
+  const product = event.target.parentNode;
   const id = product.innerText.split(' ').find((word) => word.includes('MLB'));
   const itemToRemove = costumerProducts.find((item) => item.id === id);
   costumerProducts.splice(costumerProducts.indexOf(itemToRemove), 1);
@@ -58,22 +59,24 @@ const cartItemClickListener = (event) => {
 };
 
 const createCartItemElement = ({ id, title, price, thumbnail }) => {
-  const li = document.createElement('li');
-  const img = document.createElement('img');
-  img.src = thumbnail;
-  img.className = 'item__image';
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${id} | NAME: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
-  li.addEventListener('click', () => productsPrice());
-  img.addEventListener('click', (event) => event.target.parentNode.remove());
+  const li = createCustomElement('li', 'cart__item');
+  const img = createProductImageElement(thumbnail, title);
+  const info = createCustomElement(
+      'div', 'cart__item-info', `${title} \n ${brlPrice(price)}`
+    )
+  const remove = createCustomElement('i', 'material-icons', 'highlight_off');
+  remove.classList.add('cart__remove')
+  remove.addEventListener('click', cartItemClickListener);
+  remove.addEventListener('click', () => productsPrice());
   li.appendChild(img);
+  li.appendChild(info);
+  li.appendChild(remove);
   cartItems.appendChild(li);
   return { id, title, price, thumbnail };
 };
 
 const changeIcon = (action) => {
-  const cartIcon = document.querySelectorAll('.material-icons');
+  const cartIcon = document.querySelectorAll('.cart-icon');
   const thisIcon = action ? 'add_shopping_cart' : 'shopping_cart';
   cartIcon.forEach(icon => icon.innerHTML = thisIcon);
 }
@@ -91,7 +94,7 @@ const addToCart = () => {
 };
 
 const loadingAPI = () => {
-  const loading = createCustomElement('div', 'loading', '...carregando');
+  const loading = createCustomElement('div', 'loading', 'Carregando...');
   itemsList.appendChild(loading);
 };
 
@@ -122,8 +125,7 @@ const restoreCostumerCart = () => {
 
 const btnMobile = document.querySelector('#btn-mobile');
 btnMobile.addEventListener('click', () => {
-  const cart = document.querySelector('.cart');
-  cart.classList.toggle('active');
+  document.querySelector('.cart').classList.toggle('active');
 });
 
 window.onload = () => {
