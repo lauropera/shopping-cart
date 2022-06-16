@@ -2,7 +2,7 @@ const cartItems = document.querySelector('.cart__items');
 const totalPrices = document.querySelector('.total-price');
 const itemsList = document.querySelector('.items');
 const storageProducts = JSON.parse(getSavedCartItems());
-let costumerProducts = getSavedCartItems() !== null ? storageProducts : [];
+let costumerCart = getSavedCartItems() !== null ? storageProducts : [];
 
 const createProductImageElement = (imageSource, title) => {
   const img = document.createElement('img');
@@ -42,8 +42,17 @@ const getSkuFromProductItem = (item) =>
 
 const round = (sum) => Math.round(((sum)) * 100) / 100;
 
+const badgeIcon = (action, quantity) => {
+  const badges = document.querySelectorAll('.badge');
+  badges.forEach((badge) => {
+    action !== 'refresh' ? badge.classList.remove('active') :
+    badge.classList.add('active');
+    badge.innerHTML = quantity;
+  });
+}
+
 const productsPrice = () => {
-  const values = costumerProducts.map(({ price }) => price);
+  const values = costumerCart.map(({ price }) => price);
   const total = values.reduce((acc, value) => round(acc + value), 0);
   totalPrices.innerText = brlPrice(total);
 };
@@ -51,10 +60,11 @@ const productsPrice = () => {
 const cartItemClickListener = (event) => {
   const product = event.target.parentNode;
   const id = product.innerText.split(' ').find((word) => word.includes('MLB'));
-  const itemToRemove = costumerProducts.find((item) => item.id === id);
-  costumerProducts.splice(costumerProducts.indexOf(itemToRemove), 1);
-  saveCartItems(JSON.stringify(costumerProducts));
-  if (costumerProducts.length === 0) changeIcon(false);
+  const itemToRemove = costumerCart.find((item) => item.id === id);
+  costumerCart.splice(costumerCart.indexOf(itemToRemove), 1);
+  saveCartItems(JSON.stringify(costumerCart));
+  badgeIcon('refresh', costumerCart.length);
+  if (costumerCart.length === 0) badgeIcon('empty-cart');
   product.remove();
 };
 
@@ -75,21 +85,15 @@ const createCartItemElement = ({ id, title, price, thumbnail }) => {
   return { id, title, price, thumbnail };
 };
 
-const changeIcon = (action) => {
-  const cartIcon = document.querySelectorAll('.cart-icon');
-  const thisIcon = action ? 'add_shopping_cart' : 'shopping_cart';
-  cartIcon.forEach(icon => icon.innerHTML = thisIcon);
-}
-
 const addToCart = () => {
   const addButtons = document.querySelectorAll('.item__add');
   addButtons.forEach((btn) => btn.addEventListener('click', async () => {
     const productId = getSkuFromProductItem(btn.parentNode);
     const product = await fetchItem(productId);
-    costumerProducts.push(createCartItemElement(product));
-    saveCartItems(JSON.stringify(costumerProducts));
+    costumerCart.push(createCartItemElement(product));
+    saveCartItems(JSON.stringify(costumerCart));
     productsPrice();
-    changeIcon(true);
+    badgeIcon('refresh', costumerCart.length);
   }));
 };
 
@@ -111,15 +115,15 @@ const canClearCart = () => {
   cleartCartBtn.addEventListener('click', () => {
     cartItems.textContent = '';
     localStorage.removeItem('cartItems');
-    costumerProducts = [];
+    costumerCart = [];
     productsPrice()
-    changeIcon(false);
+    badgeIcon('empty-cart');
   });
 };
 
 const restoreCostumerCart = () => {
-  if (costumerProducts.length > 1) changeIcon(true);
-  costumerProducts.forEach((product) => createCartItemElement(product));
+  costumerCart.forEach((product) => createCartItemElement(product));
+  if (costumerCart.length > 0) badgeIcon('refresh', costumerCart.length);
   productsPrice();
 };
 
