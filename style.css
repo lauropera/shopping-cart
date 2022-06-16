@@ -10,6 +10,7 @@ body {
 }
 
 .header {
+  position: relative;
   background-color: rgb(23, 24, 55);
   display: flex;
   align-items: center;
@@ -32,6 +33,7 @@ body {
 }
 
 .container-cartTitle {
+  position: relative;
   display: flex;
   align-items: center;
   background-color: rgb(38, 58, 104);
@@ -130,7 +132,7 @@ body {
 }
 
 .item .item__add:active {
-  transition: 120ms;
+  transition: 240ms;
   background-color: rgb(38, 25, 61);
 }
 
@@ -178,6 +180,7 @@ body {
 
 .cart .cart__item:hover {
   opacity: 0.6;
+  /* background-color: rgb(240, 240, 239); */
   transition: 240ms;
 }
 
@@ -194,7 +197,6 @@ body {
 @media screen and ( max-width : 600px ) {
 
   .header {
-    position: fixed;
     justify-content: center;
   }
 
@@ -213,7 +215,7 @@ body {
 
   .cart {
     display: none;
-    position: fixed;
+    position: absolute;
     width: 100%;
     top: 60px;
     height: 80vh;
@@ -224,14 +226,13 @@ body {
 
   .cart.active {
     display: flex;
-    height: 100vh;
-    box-shadow: 0 2px 4px -2px black;
+    height: 80vh;
   }
 
   .cart .cart__items {
     display: flex;
     list-style: none;
-    height: 75vh;
+    height: 100vh;
     padding: 12px;
     gap: 12px;
     flex-direction: column;
@@ -245,16 +246,10 @@ body {
   #btn-mobile {
     display: inline-block;
     background: none;
+    background-color: rgb(44, 48, 114);
     border: none;
+    padding: 2px;
     border-radius: 100%;
     cursor: pointer;
-  }
-}
-
-@media screen and ( min-width : 801px ) {
-
-  .item .item__add:hover {
-    transition: 240ms;
-    background-color: rgb(38, 25, 61);
   }
 }
