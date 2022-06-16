@@ -21,15 +21,15 @@ const createCustomElement = (element, className, innerText) => {
 const brlPrice = (value) => value
   .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-const createProductItemElement = ({ sku, name, image, salePrice }) => {
+const createProductItemElement = ({ id, title, thumbnail, price }) => {
   const section = document.createElement('section');
   section.className = 'item';
   section.appendChild(
-    createCustomElement('div', 'item__price', brlPrice(salePrice))
+    createCustomElement('div', 'item__price', brlPrice(price))
     );
-  section.appendChild(createCustomElement('span', 'item__sku', sku));
-  section.appendChild(createCustomElement('span', 'item__title', name));
-  section.appendChild(createProductImageElement(image));
+  section.appendChild(createCustomElement('span', 'item__sku', id));
+  section.appendChild(createCustomElement('span', 'item__title', title));
+  section.appendChild(createProductImageElement(thumbnail));
   section.appendChild(
     createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
   );
@@ -42,7 +42,7 @@ const getSkuFromProductItem = (item) =>
 const round = (sum) => Math.round(((sum)) * 100) / 100;
 
 const productsPrice = () => {
-  const values = costumerProducts.map(({ salePrice }) => salePrice);
+  const values = costumerProducts.map(({ price }) => price);
   const total = values.reduce((acc, value) => round(acc + value), 0);
   totalPrices.innerText = brlPrice(total);
 };
@@ -50,40 +50,33 @@ const productsPrice = () => {
 const cartItemClickListener = (event) => {
   const product = event.target;
   const id = product.innerText.split(' ').find((word) => word.includes('MLB'));
-  const itemToRemove = costumerProducts.find((item) => item.sku === id);
+  const itemToRemove = costumerProducts.find((item) => item.id === id);
   costumerProducts.splice(costumerProducts.indexOf(itemToRemove), 1);
   saveCartItems(JSON.stringify(costumerProducts));
   product.remove();
 };
 
-const createCartItemElement = ({ sku, name, salePrice, image }) => {
+const createCartItemElement = ({ id, title, price, thumbnail }) => {
   const li = document.createElement('li');
   const img = document.createElement('img');
-  img.src = image;
+  img.src = thumbnail;
   img.className = 'item__image';
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.innerText = `SKU: ${id} | NAME: ${title} | PRICE: $${price}`;
   li.addEventListener('click', cartItemClickListener);
   li.addEventListener('click', () => productsPrice());
   img.addEventListener('click', (event) => event.target.parentNode.remove());
   li.appendChild(img);
   cartItems.appendChild(li);
+  return { id, title, price, thumbnail };
 };
-
-const productInfo = ({ id, title, thumbnail, price }) => ({
-  sku: id,
-  name: title,
-  image: thumbnail,
-  salePrice: price,
-});
 
 const addToCart = () => {
   const addButtons = document.querySelectorAll('.item__add');
   addButtons.forEach((btn) => btn.addEventListener('click', async () => {
     const productId = getSkuFromProductItem(btn.parentNode);
-    const product = productInfo(await fetchItem(productId));
-    createCartItemElement(product);
-    costumerProducts.push(product);
+    const product = await fetchItem(productId);
+    costumerProducts.push(createCartItemElement(product));
     saveCartItems(JSON.stringify(costumerProducts));
     productsPrice();
   }));
@@ -96,7 +89,7 @@ const loadingAPI = () => {
 
 const showProducts = async () => {
   const { results } = await fetchProducts('computador');
-  const allProducts = results.map((product) => productInfo(product));
+  const allProducts = results.map((product) => product);
   allProducts.forEach((product) => createProductItemElement(product));
   itemsList.querySelector('.loading').remove();
   addToCart();
