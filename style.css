@@ -243,6 +243,10 @@ body {
     font-size: 14px;
   }
 
+  .items {
+    margin-top: 80px;
+  }
+
   #btn-mobile {
     display: inline-block;
     background: none;
