@@ -129,6 +129,7 @@ body {
   flex-direction: column;
   height: auto;
   width: 190px;
+  gap: 12px;
   border: 2px solid rgb(234, 234, 233);
   border-radius: 5px;
   box-sizing: border-box;
@@ -164,8 +165,12 @@ body {
 
 .item .item__price {
   display: flex;
-  justify-content: flex-end;
-  padding: 6px;
+  justify-content: flex-start;
+  padding: 0 6px;
+}
+
+.item .item__image {
+  height: 190px;
 }
 
 .cart {
@@ -301,7 +306,7 @@ body {
   }
 
   .item {
-    width: 140px;
+    width: 170px;
     font-size: 14px;
   }
 

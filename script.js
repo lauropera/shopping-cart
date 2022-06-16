@@ -25,12 +25,12 @@ const brlPrice = (value) => value
 const createProductItemElement = ({ id, title, thumbnail, price }) => {
   const section = document.createElement('section');
   section.className = 'item';
+  section.appendChild(createProductImageElement(thumbnail));
   section.appendChild(
     createCustomElement('span', 'item__price', brlPrice(price))
     );
   section.appendChild(createCustomElement('span', 'item__sku', id));
   section.appendChild(createCustomElement('span', 'item__title', title));
-  section.appendChild(createProductImageElement(thumbnail));
   section.appendChild(
     createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
   );
