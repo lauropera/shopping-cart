@@ -1,6 +1,6 @@
 # :shopping_cart: Shopping Cart
 
-![Preview Projeto](./github/Readme-gif.gif)
+![Preview Projeto](./imgs/Readme-gif.gif)
 
 ## Acesse meu projeto <a href="https://lauropera.github.io/shopping-cart/">AQUI</a>
 
@@ -16,4 +16,4 @@ Nesse projeto desenvolvemos nosso conhecimento em requisições para uma API e f
 * Jest
 
 ## :heavy_check_mark: Nota
-![Minha nota no projeto](./github/nota-projeto.png)
+![Minha nota no projeto](./imgs/nota-projeto.png)
