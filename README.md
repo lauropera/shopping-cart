@@ -15,5 +15,5 @@ Nesse projeto desenvolvemos nosso conhecimento em requisições para uma API e f
 * JavaScript
 * Jest
 
-## :heavy_check_mark: Nota:
+## :heavy_check_mark: Nota
 ![Minha nota no projeto](./github/nota-projeto.png)
