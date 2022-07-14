@@ -6,6 +6,8 @@
 
 ## :satellite: Desenvolvimento
 
+Projeto desenvolvido na <a href="https://betrybe.com/" target="_blank">Trybe</a> durante o módulo de Front-End!
+
 Nesse projeto desenvolvemos nosso conhecimento em requisições para uma API e funções assíncronas. O desenvolvimento foi em base da metodologia TDD, onde construímos testes unitários antes de desenvolver o código em si.
 
 ## :hammer_and_wrench: Tecnologias
